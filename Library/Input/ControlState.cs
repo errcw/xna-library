@@ -34,9 +34,9 @@ namespace Library.Input
         }
 
         /// <summary>
-        /// If the control triggered an action this frame.
+        /// If the control was pressed (physically or virtually with autorepeat) this frame.
         /// </summary>
-        public bool Triggered
+        public bool PressedRepeat
         {
             get { return (_repeatState != AutoRepeatState.Idle && _repeatElapsed == 0f); }
         }

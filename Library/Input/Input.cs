@@ -6,19 +6,19 @@ using Microsoft.Xna.Framework.Input;
 namespace Library.Input
 {
     /// <summary>
-    /// Polls for player input.
+    /// Polls for input from one controller.
     /// </summary>
     public class Input
     {
         /// <summary>
-        /// The currently active controller.
+        /// The currently active controller (i.e., the one being polled).
         /// </summary>
-        public PlayerIndex? ActiveController { get; protected set; }
+        public PlayerIndex? Controller { get; protected set; }
 
         /// <summary>
         /// An event triggered when the active controller is disconnected.
         /// </summary>
-        public event EventHandler<EventArgs> ActiveControllerDisconnected;
+        public event EventHandler<EventArgs> ControllerDisconnected;
 
         /// <summary>
         /// Polls the current input state.
@@ -26,16 +26,17 @@ namespace Library.Input
         /// <param name="time">The elapsed time, in seconds, since the last update.</param>
         public void Update(float time)
         {
-            PollActiveController();
-            if (ActiveController != null)
+            PollControllerConnectivity();
+            if (Controller != null)
             {
-                PollState(time, ActiveController.Value);
+                PollState(time, Controller.Value);
                 UpdateVibration(time);
             }
         }
 
         /// <summary>
-        /// Polls all the controllers looking for the specified predicate to be true.
+        /// Polls all the controllers looking for the specified predicate to be true. The
+        /// first controller matching the predicate is assigned to ActiveController.
         /// </summary>
         /// <param name="poll">The predicate to test.</param>
         /// <returns>True if a controller was selected; otherwise, false.</returns>
@@ -46,7 +47,7 @@ namespace Library.Input
                 GamePadState state = PollState(0f, p);
                 if (poll(state))
                 {
-                    ActiveController = p;
+                    Controller = p;
                     return true;
                 }
             }
@@ -54,18 +55,26 @@ namespace Library.Input
         }
 
         /// <summary>
-        /// Sets the vibration on the active controller.
+        /// Adds vibration on the active controller. Multiple calls are additive.
         /// </summary>
         /// <param name="amount">The strength (x: low frequency, y: high frequency) in [0, 1].</param>
         /// <param name="duration">The duration in seconds.</param>
-        public void SetVibration(Vector2 amount, float duration)
+        public void AddVibration(Vector2 amount, float duration)
         {
 #if XBOX
-            if (GamePad.SetVibration(ActiveController.Value, amount.X, amount.Y))
+            if (GamePad.SetVibration(Controller.Value, amount.X, amount.Y))
             {
                 _vibrationDuration = duration;
             }
 #endif
+        }
+
+        /// <summary>
+        /// Stops the vibration on the active controller.
+        /// </summary>
+        public void StopVibration()
+        {
+            GamePad.SetVibration(Controller.Value, 0f, 0f);
         }
 
         /// <summary>
@@ -80,7 +89,7 @@ namespace Library.Input
                 _vibrationDuration -= time;
                 if (_vibrationDuration <= 0f)
                 {
-                    GamePad.SetVibration(ActiveController.Value, 0f, 0f);
+                    StopVibration();
                 }
             }
 #endif
@@ -89,30 +98,30 @@ namespace Library.Input
         /// <summary>
         /// Monitors the connected state of the active controller.
         /// </summary>
-        private void PollActiveController()
+        private void PollControllerConnectivity()
         {
 #if XBOX
-            if (ActiveController != null)
+            if (Controller != null)
             {
                 // check if the controller is disconnected
-                GamePadState padState = GamePad.GetState(ActiveController.Value);
+                GamePadState padState = GamePad.GetState(Controller.Value);
                 if (!padState.IsConnected)
                 {
-                    _prevActiveController = ActiveController.Value;
-                    ActiveController = null;
-                    if (ActiveControllerDisconnected != null)
+                    _prevActiveController = Controller.Value;
+                    Controller = null;
+                    if (ControllerDisconnected != null)
                     {
-                        ActiveControllerDisconnected(this, EventArgs.Empty);
+                        ControllerDisconnected(this, EventArgs.Empty);
                     }
                 }
             }
             else
             {
                 // check if the controller is reconnected
-                GamePadState padState = GamePad.GetState(_prevActiveController);
+                GamePadState padState = GamePad.GetState(_prevController);
                 if (padState.IsConnected)
                 {
-                    ActiveController = _prevActiveController;
+                    Controller = _prevController;
                 }
             }
 #endif
@@ -128,6 +137,7 @@ namespace Library.Input
 #if XBOX
             return GamePad.GetState(playerIdx);
 #elif WINDOWS
+            // fabricate the state
             GamePadState state = new GamePadState();
             return state;
 #endif
@@ -135,6 +145,6 @@ namespace Library.Input
 
         private float _vibrationDuration;
 
-        private PlayerIndex _prevActiveController;
+        private PlayerIndex _prevController;
     }
 }
