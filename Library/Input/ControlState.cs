@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Input;
 namespace Library.Input
 {
     /// <summary>
-    /// The state of a single control (key, button, etc.).
+    /// The up/down state of a single button.
     /// </summary>
     public class ControlState
     {
@@ -42,23 +42,14 @@ namespace Library.Input
         }
 
         /// <summary>
-        /// Creates a new control state.
-        /// </summary>
-        /// <param name="pollIsDown">A predicate to test the state of this control.</param>
-        public ControlState(PollIsDown pollIsDown)
-        {
-            _pollIsDown = pollIsDown;
-        }
-
-        /// <summary>
         /// Updates this control.
         /// </summary>
         /// <param name="time">The elapsed time, in seconds, since the last update.</param>
-        /// <param name="state">The current gamepad state.</param>
-        internal void Update(float time, GamePadState state)
+        /// <param name="down">True if the button is pressed down this frame; otherwise, false.</param>
+        internal void Update(float time, bool down)
         {
             _wasDown = _isDown;
-            _isDown = _pollIsDown(state);
+            _isDown = down;
 
             if (_isDown)
             {
@@ -96,8 +87,6 @@ namespace Library.Input
             Delay,
             Repeat
         }
-
-        private PollIsDown _pollIsDown;
 
         private bool _isDown;
         private bool _wasDown;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -29,14 +30,14 @@ namespace Library.Input
             PollControllerConnectivity();
             if (Controller != null)
             {
-                PollState(time, Controller.Value);
+                UpdateControls(time);
                 UpdateVibration(time);
             }
         }
 
         /// <summary>
         /// Polls all the controllers looking for the specified predicate to be true. The
-        /// first controller matching the predicate is assigned to ActiveController.
+        /// first controller matching the predicate is assigned to Controller.
         /// </summary>
         /// <param name="poll">The predicate to test.</param>
         /// <returns>True if a controller was selected; otherwise, false.</returns>
@@ -75,6 +76,44 @@ namespace Library.Input
         public void StopVibration()
         {
             GamePad.SetVibration(Controller.Value, 0f, 0f);
+        }
+
+        /// <summary>
+        /// Registers a control state to be updated every frame.
+        /// </summary>
+        /// <param name="state">The control state to update.</param>
+        /// <param name="pollIsDown">The polling function to update the control with.</param>
+        public void Register(ControlState state, PollIsDown pollIsDown)
+        {
+            _stateCtrls.Add(state, pollIsDown);
+        }
+
+        /// <summary>
+        /// Registers a control position to be updated every frame.
+        /// </summary>
+        /// <param name="position">The control position to update.</param>
+        /// <param name="pollPosition">The polling function to update the control with.</param>
+        public void Register(ControlPosition position, PollPosition pollPosition)
+        {
+            _positionCtrls.Add(position, pollPosition);
+        }
+
+
+        /// <summary>
+        /// Updates the state of the registered controls.
+        /// </summary>
+        /// <param name="time">The elapsed time, in seconds, since the last update.</param>
+        private void UpdateControls(float time)
+        {
+            GamePadState state = PollState(time, Controller.Value);
+            foreach (var entry in _stateCtrls)
+            {
+                entry.Key.Update(time, entry.Value(state));
+            }
+            foreach (var entry in _positionCtrls)
+            {
+                entry.Key.Update(time, entry.Value(state));
+            }
         }
 
         /// <summary>
@@ -144,6 +183,9 @@ namespace Library.Input
         }
 
         private float _vibrationDuration;
+
+        private Dictionary<ControlState, PollIsDown> _stateCtrls = new Dictionary<ControlState, PollIsDown>();
+        private Dictionary<ControlPosition, PollPosition> _positionCtrls = new Dictionary<ControlPosition, PollPosition>();
 
         private PlayerIndex _prevController;
     }

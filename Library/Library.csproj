@@ -87,9 +87,10 @@
     <Compile Include="Animation\Easing.cs" />
     <Compile Include="Animation\IAnimation.cs" />
     <Compile Include="Animation\SequentialAnimation.cs" />
-    <Compile Include="Input\Controls.cs" />
     <Compile Include="Input\ControlState.cs" />
+    <Compile Include="Input\ControlPosition.cs" />
     <Compile Include="Input\Input.cs" />
+    <Compile Include="Input\Polling.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screen\Screen.cs" />
     <Compile Include="Screen\ScreenStack.cs" />

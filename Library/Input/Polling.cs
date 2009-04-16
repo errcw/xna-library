@@ -14,17 +14,33 @@ namespace Library.Input
     public delegate bool PollIsDown(GamePadState state);
 
     /// <summary>
-    /// A function to poll the state of a gamepad control.
+    /// A function to poll the position of a gamepad control.
     /// </summary>
     /// <param name="state">The gamepad state to test.</param>
-    /// <returns>The state of the polled control.</returns>
-    public delegate T PollValue<T>(GamePadState state);
+    /// <returns>The position of the polled control.</returns>
+    /// <typeparam name="T">The type of position returned.</typeparam>
+    public delegate Vector2 PollPosition(GamePadState state);
 
     /// <summary>
-    /// A set of gamepad predicates.
+    /// A set of gamepad polling functions.
     /// </summary>
-    public static class Controls
+    public static class Polling
     {
+        /// <summary>
+        /// Polls the position of a controller's left thumb stick.
+        /// </summary>
+        public static readonly PollPosition LeftThumbStick = (s => s.ThumbSticks.Left);
+
+        /// <summary>
+        /// Polls the position of a controller's right thumb stick.
+        /// </summary>
+        public static readonly PollPosition RightThumbStick = (s => s.ThumbSticks.Right);
+
+        /// <summary>
+        /// Polls the position of a controller's triggers (left in X, right in Y).
+        /// </summary>
+        public static readonly PollPosition Triggers = (s => new Vector2(s.Triggers.Left, s.Triggers.Right));
+
         /// <summary>
         /// Creates a predicate to check if one or more buttons is down.
         /// </summary>
