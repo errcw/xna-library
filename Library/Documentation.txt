@@ -1,0 +1,23 @@
+﻿/*! \namespace Library.Animation
+    \brief Animation of sprites and other objects.
+    
+Animates arbitrary things.
+*/
+
+/*! \namespace Library.Input
+    \brief Polling for input.
+    
+Handles input.
+*/
+
+/*! \namespace Library.Sprite
+    \brief Rendering images and text.
+    
+Sprites are renderable things.
+*/
+
+/*! \namespace Library.Screen
+    \brief Game state management with screens on a stack.
+    
+Screens.
+*/
