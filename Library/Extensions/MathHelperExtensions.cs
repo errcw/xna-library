@@ -16,7 +16,7 @@ namespace Library.Extensions
         /// <param name="b">The second number to compare.</param>
         /// <param name="epsilon">The epsilon tolerance.</param>
         /// <returns>If a and b are within epsilon of each other.</returns>
-        public static bool EpsilonEquals(this MathHelper math, float a, float b, float epsilon)
+        public static bool EpsilonEquals(float a, float b, float epsilon)
         {
             return Math.Abs(a - b) <= epsilon;
         }

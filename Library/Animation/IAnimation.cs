@@ -11,7 +11,7 @@ namespace Library.Animation
     public interface IAnimation
     {
         /// <summary>
-        /// Starts this animation.
+        /// Starts this animation. If the animation has already started, it is restarted.
         /// </summary>
         void Start();
 

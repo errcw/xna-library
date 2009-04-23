@@ -19,13 +19,13 @@ namespace Library.Sprite
         /// <param name="controlee">The sprite to animate.</param>
         /// <param name="target">The target attribute of the sprite.</param>
         /// <param name="duration">The duration, in seconds, of this animaion.</param>
-        /// <param name="ease">The easing between attributes.</param>
-        public SpriteAnimation(Sprite controllee, T target, float duration, Ease ease)
+        /// <param name="interpolate">The interpolation function for attribute values.</param>
+        public SpriteAnimation(Sprite controllee, T target, float duration, Interpolate<T> interpolate)
         {
             _controllee = controllee;
             _target = target;
             _duration = duration;
-            _ease = ease;
+            _interpolate = interpolate;
             Start();
         }
 
@@ -45,10 +45,14 @@ namespace Library.Sprite
         /// <returns>False after the duration has elapsed, true at all times before.</returns>
         public bool Update(float time)
         {
+            if (_elapsed >= _duration)
+            {
+                return false;
+            }
             _elapsed += time;
             if (_elapsed < _duration)
             {
-                Attribute = AnimateAttribute(_start, _target, _elapsed / _duration, _ease);
+                Attribute = _interpolate(_start, _target, _elapsed / _duration);
                 return true;
             }
             else
@@ -61,23 +65,13 @@ namespace Library.Sprite
         /// <summary>
         /// The animated attribute of the sprite.
         /// </summary>
-        protected abstract T Attribute
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Returns the the attribute animated between a start and target value.
-        /// </summary>
-        protected abstract T AnimateAttribute(T start, T target, float progress, Ease ease);
-
+        protected abstract T Attribute { get; set; }
 
         protected Sprite _controllee;
 
         protected T _start;
         protected T _target;
-        protected Ease _ease;
+        protected Interpolate<T> _interpolate;
 
         protected float _duration;
         protected float _elapsed;
@@ -91,8 +85,8 @@ namespace Library.Sprite
         /// <summary>
         /// Creates and starts a new position animation.
         /// </summary>
-        public PositionAnimation(Sprite controllee, Vector2 target, float duration, Ease ease)
-            : base(controllee, target, duration, ease)
+        public PositionAnimation(Sprite controllee, Vector2 target, float duration, Interpolate<Vector2> interpolate)
+            : base(controllee, target, duration, interpolate)
         {
         }
 
@@ -104,16 +98,6 @@ namespace Library.Sprite
             get { return _controllee.Position; }
             set { _controllee.Position = value; }
         }
-
-        /// <summary>
-        /// Returns an interpolated position.
-        /// </summary>
-        protected override Vector2 AnimateAttribute(Vector2 start, Vector2 target, float progress, Ease ease)
-        {
-            return new Vector2(
-                ease(start.X, target.X - start.X, progress),
-                ease(start.Y, target.Y - start.Y, progress));
-        }
     }
 
     /// <summary>
@@ -124,8 +108,8 @@ namespace Library.Sprite
         /// <summary>
         /// Creates and starts a new rotation animation.
         /// </summary>
-        public RotationAnimation(Sprite controllee, float target, float duration, Ease ease)
-            : base(controllee, target, duration, ease)
+        public RotationAnimation(Sprite controllee, float target, float duration, Interpolate<float> interpolate)
+            : base(controllee, target, duration, interpolate)
         {
         }
 
@@ -137,14 +121,6 @@ namespace Library.Sprite
             get { return _controllee.Rotation; }
             set { _controllee.Rotation = value; }
         }
-
-        /// <summary>
-        /// Returns an interpolated rotation.
-        /// </summary>
-        protected override float AnimateAttribute(float start, float target, float progress, Ease ease)
-        {
-            return ease(start, target - start, progress);
-        }
     }
 
     /// <summary>
@@ -155,8 +131,8 @@ namespace Library.Sprite
         /// <summary>
         /// Creates and starts a new scale animation.
         /// </summary>
-        public ScaleAnimation(Sprite controllee, Vector2 target, float duration, Ease ease)
-            : base(controllee, target, duration, ease)
+        public ScaleAnimation(Sprite controllee, Vector2 target, float duration, Interpolate<Vector2> interpolate)
+            : base(controllee, target, duration, interpolate)
         {
         }
 
@@ -168,16 +144,6 @@ namespace Library.Sprite
             get { return _controllee.Scale; }
             set { _controllee.Scale = value; }
         }
-
-        /// <summary>
-        /// Returns an interpolated rotation.
-        /// </summary>
-        protected override Vector2 AnimateAttribute(Vector2 start, Vector2 target, float progress, Ease ease)
-        {
-            return new Vector2(
-                ease(start.X, target.X - start.X, progress),
-                ease(start.Y, target.Y - start.Y, progress));
-        }
     }
 
     /// <summary>
@@ -188,8 +154,8 @@ namespace Library.Sprite
         /// <summary>
         /// Creates and starts a new color animation.
         /// </summary>
-        public ColorAnimation(Sprite controllee, Color target, float duration, Ease ease)
-            : base(controllee, target, duration, ease)
+        public ColorAnimation(Sprite controllee, Color target, float duration, Interpolate<Color> interpolate)
+            : base(controllee, target, duration, interpolate)
         {
         }
 
@@ -200,18 +166,6 @@ namespace Library.Sprite
         {
             get { return _controllee.Color; }
             set { _controllee.Color = value; }
-        }
-
-        /// <summary>
-        /// Returns an interpolated color.
-        /// </summary>
-        protected override Color AnimateAttribute(Color start, Color target, float progress, Ease ease)
-        {
-            return new Color(
-                ease(start.R / 255f, (target.R - start.R) / 255f, progress),
-                ease(start.G / 255f, (target.G - start.G) / 255f, progress),
-                ease(start.B / 255f, (target.B - start.B) / 255f, progress),
-                ease(start.A / 255f, (target.A - start.A) / 255f, progress));
         }
     }
 }

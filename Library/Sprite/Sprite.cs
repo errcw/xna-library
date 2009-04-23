@@ -84,7 +84,7 @@ namespace Library.Sprite
         /// <summary>
         /// Returns a deep copy of this sprite.
         /// </summary>
-        internal virtual Sprite Clone()
+        public virtual Sprite Clone()
         {
             return (Sprite)MemberwiseClone();
         }

@@ -38,7 +38,7 @@ namespace Library.Sprite
         }
 
         /// <summary>
-        /// Draws this image using the given parameters.
+        /// Draws this image using the given transformation.
         /// </summary>
         internal override void Draw(SpriteBatch spriteBatch, Vector2 position, Vector2 origin, float rotation, Vector2 scale, Color color, float layer)
         {

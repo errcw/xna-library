@@ -194,7 +194,7 @@ namespace Library.Sprite.Descriptor
             float duration = ParseFloat(GetAttribute(animationElem, "Duration"));
             Vector2 target = ParseVector2(GetAttribute(animationElem, "Target"));
             Ease easing = ParseEasing(GetAttribute(animationElem, "Easing"));
-            return new PositionAnimation(sprite, target, duration, easing);
+            return new PositionAnimation(sprite, target, duration, Interpolation.InterpolateVector2(easing));
         }
 
         private IAnimation CreateRotationAnimation(XElement animationElem)
@@ -203,7 +203,7 @@ namespace Library.Sprite.Descriptor
             float duration = ParseFloat(GetAttribute(animationElem, "Duration"));
             float target = ParseFloat(GetAttribute(animationElem, "Target"));
             Ease easing = ParseEasing(GetAttribute(animationElem, "Easing"));
-            return new RotationAnimation(sprite, target, duration, easing);
+            return new RotationAnimation(sprite, target, duration, Interpolation.InterpolateFloat(easing));
         }
 
         private IAnimation CreateScaleAnimation(XElement animationElem)
@@ -212,7 +212,7 @@ namespace Library.Sprite.Descriptor
             float duration = ParseFloat(GetAttribute(animationElem, "Duration"));
             Vector2 target = ParseVector2(GetAttribute(animationElem, "Target"));
             Ease easing = ParseEasing(GetAttribute(animationElem, "Easing"));
-            return new ScaleAnimation(sprite, target, duration, easing);
+            return new ScaleAnimation(sprite, target, duration, Interpolation.InterpolateVector2(easing));
         }
 
         private IAnimation CreateColorAnimation(XElement animationElem)
@@ -221,7 +221,7 @@ namespace Library.Sprite.Descriptor
             float duration = ParseFloat(GetAttribute(animationElem, "Duration"));
             Color target = ParseColor(GetAttribute(animationElem, "Target"));
             Ease easing = ParseEasing(GetAttribute(animationElem, "Easing"));
-            return new ColorAnimation(sprite, target, duration, easing);
+            return new ColorAnimation(sprite, target, duration, Interpolation.InterpolateColor(easing));
         }
 
         /// <summary>

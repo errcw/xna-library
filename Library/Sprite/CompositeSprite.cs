@@ -61,6 +61,16 @@ namespace Library.Sprite
         }
 
         /// <summary>
+        /// Returns a deep copy of this composite and all its children.
+        /// </summary>
+        public override Sprite Clone()
+        {
+            CompositeSprite c = (CompositeSprite)MemberwiseClone();
+            c._sprites = _sprites.Select(s => s.Clone()).ToList();
+            return c;
+        }
+
+        /// <summary>
         /// Draws the children of this composite with the given transformation.
         /// </summary>
         internal override void Draw(SpriteBatch spriteBatch, Vector2 position, Vector2 origin, float rotation, Vector2 scale, Color color, float layer)
@@ -76,16 +86,6 @@ namespace Library.Sprite
                             scale * sprite.Scale,
                             new Color(color.ToVector4() * sprite.Color.ToVector4()),
                             layer + (sprite.Layer * ChildLayerScale)));
-        }
-
-        /// <summary>
-        /// Returns a deep copy of this composite and all its children.
-        /// </summary>
-        internal override Sprite Clone()
-        {
-            CompositeSprite c = (CompositeSprite)MemberwiseClone();
-            c._sprites = _sprites.Select(s => s.Clone()).ToList();
-            return c;
         }
 
         /// <summary>

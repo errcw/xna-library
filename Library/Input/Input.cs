@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -58,16 +59,10 @@ namespace Library.Input
         /// <summary>
         /// Adds vibration on the active controller. Multiple calls are additive.
         /// </summary>
-        /// <param name="amount">The strength (x: low frequency, y: high frequency) in [0, 1].</param>
-        /// <param name="duration">The duration in seconds.</param>
-        public void AddVibration(Vector2 amount, float duration)
+        /// <param name="vibration">The vibration function.</param>
+        public void AddVibration(Vibration vibration)
         {
-#if XBOX
-            if (GamePad.SetVibration(Controller.Value, amount.X, amount.Y))
-            {
-                _vibrationDuration = duration;
-            }
-#endif
+            _vibration.Add(vibration);
         }
 
         /// <summary>
@@ -75,29 +70,31 @@ namespace Library.Input
         /// </summary>
         public void StopVibration()
         {
+            _vibration.Clear();
+#if XBOX
             GamePad.SetVibration(Controller.Value, 0f, 0f);
+#endif
         }
 
         /// <summary>
         /// Registers a control state to be updated every frame.
         /// </summary>
-        /// <param name="state">The control state to update.</param>
-        /// <param name="pollIsDown">The polling function to update the control with.</param>
-        public void Register(ControlState state, PollIsDown pollIsDown)
+        /// <param name="control">The control state to update.</param>
+        /// <param name="pollFn">The polling function to update the control with.</param>
+        public void Register(ControlState control, PollIsDown pollFn)
         {
-            _stateCtrls.Add(state, pollIsDown);
+            _stateCtrls.Add(control, pollFn);
         }
 
         /// <summary>
         /// Registers a control position to be updated every frame.
         /// </summary>
-        /// <param name="position">The control position to update.</param>
-        /// <param name="pollPosition">The polling function to update the control with.</param>
-        public void Register(ControlPosition position, PollPosition pollPosition)
+        /// <param name="control">The control position to update.</param>
+        /// <param name="pollFn">The polling function to update the control with.</param>
+        public void Register(ControlPosition control, PollPosition pollFn)
         {
-            _positionCtrls.Add(position, pollPosition);
+            _positionCtrls.Add(control, pollFn);
         }
-
 
         /// <summary>
         /// Updates the state of the registered controls.
@@ -122,15 +119,21 @@ namespace Library.Input
         /// <param name="time">The elapsed time, in seconds, since the last update.</param>
         private void UpdateVibration(float time)
         {
-#if XBOX
-            if (_vibrationDuration > 0f)
-            {
-                _vibrationDuration -= time;
-                if (_vibrationDuration <= 0f)
+            Vector2 vibration = Vector2.Zero;
+            _vibration.RemoveAll(delegate(Vibration v) {
+                Vector2? amount = v(time);
+                if (amount != null)
                 {
-                    StopVibration();
+                    vibration += amount.Value;
+                    return false;
                 }
-            }
+                else
+                {
+                    return true;
+                }
+            });
+#if XBOX
+            GamePad.SetVibration(Controller.Value, vibration.X, vibration.Y);
 #endif
         }
 
@@ -146,7 +149,7 @@ namespace Library.Input
                 GamePadState padState = GamePad.GetState(Controller.Value);
                 if (!padState.IsConnected)
                 {
-                    _prevActiveController = Controller.Value;
+                    _prevController = Controller.Value;
                     Controller = null;
                     if (ControllerDisconnected != null)
                     {
@@ -182,7 +185,7 @@ namespace Library.Input
 #endif
         }
 
-        private float _vibrationDuration;
+        private List<Vibration> _vibration = new List<Vibration>();
 
         private Dictionary<ControlState, PollIsDown> _stateCtrls = new Dictionary<ControlState, PollIsDown>();
         private Dictionary<ControlPosition, PollPosition> _positionCtrls = new Dictionary<ControlPosition, PollPosition>();
