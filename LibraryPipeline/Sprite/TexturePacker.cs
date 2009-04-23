@@ -11,12 +11,12 @@ namespace LibraryPipeline.Sprite
         /// <summary>
         /// The parent container texture.
         /// </summary>
-        public BitmapContent Container { get; private set; }
+        public Texture2DContent Container { get; private set; }
 
         /// <summary>
         /// The original packed texture.
         /// </summary>
-        public BitmapContent Texture { get; private set; }
+        public Texture2DContent Texture { get; private set; }
 
         /// <summary>
         /// The position of the child texture inside its container.
@@ -42,7 +42,7 @@ namespace LibraryPipeline.Sprite
         /// Packs the specified textures.
         /// </summary>
         /// <param name="textures">The textures to pack.</param>
-        public List<PackedTexture> Pack(List<BitmapContent> textures)
+        public List<PackedTexture> Pack(List<Texture2DContent> textures)
         {
             return null;
         }

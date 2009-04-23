@@ -27,8 +27,8 @@ namespace LibraryPipeline.Sprite
     /// <summary>
     /// Imports the packed sprite XML.
     /// </summary>
-    [ContentImporter(".sprites", DisplayName = "Packed Sprites Importer")]
-    public class SpriteDescriptorImporter : ContentImporter<List<SpriteGroup>>
+    [ContentImporter(".sprites", DisplayName = "Packed Image Sprite Importer")]
+    public class SpritePackerImporter : ContentImporter<List<SpriteGroup>>
     {
         public override List<SpriteGroup> Import(string filename, ContentImporterContext context)
         {

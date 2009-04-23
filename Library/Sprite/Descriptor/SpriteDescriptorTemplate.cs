@@ -86,7 +86,7 @@ namespace Library.Sprite.Descriptor
         private Sprite CreateImageSprite(XElement spriteElem, ContentManager content)
         {
             string texture = GetAttribute(spriteElem, "Texture");
-            return new ImageSprite(content.Load<Texture2D>(texture));
+            return content.Load<ImageSprite>(texture);
         }
 
         private Sprite CreateTextSprite(XElement spriteElem, ContentManager content)

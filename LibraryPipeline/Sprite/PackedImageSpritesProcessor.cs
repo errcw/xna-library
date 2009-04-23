@@ -10,8 +10,8 @@ namespace LibraryPipeline.Sprite
     /// <summary>
     /// Packs sprite groups.
     /// </summary>
-    [ContentProcessor(DisplayName = "Sprite Packing Processor")]
-    public class SpritePackerProcessor : ContentProcessor<List<SpriteGroup>, object>
+    [ContentProcessor(DisplayName = "Packed Image Sprite Processor")]
+    public class PackedImageSpritesProcessor : ContentProcessor<List<SpriteGroup>, object>
     {
         public override object Process(List<SpriteGroup> input, ContentProcessorContext context)
         {

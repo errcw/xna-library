@@ -111,8 +111,11 @@
     <Compile Include="Sprite\Descriptor\SpriteDescriptorImporter.cs" />
     <Compile Include="Sprite\Descriptor\SpriteDescriptorWriter.cs" />
     <Compile Include="Sprite\Descriptor\SpriteDescriptorXml.cs" />
-    <Compile Include="Sprite\SpritePackerImporter.cs" />
-    <Compile Include="Sprite\SpritePackerProcessor.cs" />
+    <Compile Include="Sprite\ImageSpriteProcessor.cs" />
+    <Compile Include="Sprite\ImageSpriteStub.cs" />
+    <Compile Include="Sprite\ImageSpriteStubWriter.cs" />
+    <Compile Include="Sprite\PackedImageSpritesImporter.cs" />
+    <Compile Include="Sprite\PackedImageSpritesProcessor.cs" />
     <Compile Include="Sprite\TexturePacker.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

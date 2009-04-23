@@ -76,6 +76,7 @@
     <Compile Include="Sprite\Descriptor\SpriteDescriptorReader.cs" />
     <Compile Include="Sprite\Descriptor\SpriteDescriptorTemplate.cs" />
     <Compile Include="Sprite\ImageSprite.cs" />
+    <Compile Include="Sprite\ImageSpriteReader.cs" />
     <Compile Include="Sprite\Sprite.cs" />
     <Compile Include="Sprite\SpriteAnimation.cs" />
     <Compile Include="Sprite\TextSprite.cs" />
