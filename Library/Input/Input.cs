@@ -181,13 +181,14 @@ namespace Library.Input
 #elif WINDOWS
             // fabricate the state
             KeyboardState kbd = Keyboard.GetState();
+            MouseState ms = Mouse.GetState();
             Buttons buttons = 0;
             if (kbd.IsKeyDown(Keys.Up)) buttons |= Buttons.DPadUp;
             if (kbd.IsKeyDown(Keys.Down)) buttons |= Buttons.DPadDown;
             if (kbd.IsKeyDown(Keys.Left)) buttons |= Buttons.DPadLeft;
             if (kbd.IsKeyDown(Keys.Right)) buttons |= Buttons.DPadRight;
-            if (kbd.IsKeyDown(Keys.A)) buttons |= Buttons.A;
-            if (kbd.IsKeyDown(Keys.B)) buttons |= Buttons.B;
+            if (kbd.IsKeyDown(Keys.A) || ms.LeftButton == ButtonState.Pressed) buttons |= Buttons.A;
+            if (kbd.IsKeyDown(Keys.B) || ms.RightButton == ButtonState.Pressed) buttons |= Buttons.B;
             if (kbd.IsKeyDown(Keys.X)) buttons |= Buttons.X;
             if (kbd.IsKeyDown(Keys.Y)) buttons |= Buttons.Y;
             if (kbd.IsKeyDown(Keys.Enter)) buttons |= Buttons.Start;
