@@ -9,6 +9,8 @@ using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 
+using LibraryPipeline.Extensions;
+
 namespace LibraryPipeline.Sprite
 {
     /// <summary>
@@ -19,14 +21,11 @@ namespace LibraryPipeline.Sprite
     {
         public override ImageSpriteStub Process(Texture2DContent input, ContentProcessorContext context)
         {
-            string contentName = Path.GetFileNameWithoutExtension(context.OutputFilename);
-            string textureName = contentName + "Texture";
+            string textureName = Path.GetFileNameWithoutExtension(context.OutputFilename) + "Texture";
+            BitmapContent texture = input.Mipmaps[0];
 
-            context.AddOutputFile(context.OutputDirectory + textureName);
-            ExternalReference<Texture2DContent> texRef = context.BuildAsset<Texture2DContent, Texture2DContent>(
-                new ExternalReference<Texture2DContent>(input.Identity.SourceFilename), null, null, null, textureName);
-
-            Rectangle texRect = new Rectangle(0, 0, input.Mipmaps[0].Width, input.Mipmaps[0].Height);
+            ExternalReference<Texture2DContent> texRef = context.WriteAsset(input, textureName);
+            Rectangle texRect = new Rectangle(0, 0, texture.Width, texture.Height);
 
             return new ImageSpriteStub(texRef, texRect);
         }
