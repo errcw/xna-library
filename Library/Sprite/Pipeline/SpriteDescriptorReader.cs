@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Content;
 using Library.Sprite;
 using Library.Animation;
 
-namespace Library.Sprite.Descriptor
+namespace Library.Sprite.Pipeline
 {
     /// <summary>
     /// Reads a sprite descriptor template from a binary file.

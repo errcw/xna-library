@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using Library.Animation;
 
-namespace Library.Sprite.Descriptor
+namespace Library.Sprite.Pipeline
 {
     /// <summary>
     /// A template for creating sprite descriptors. 
@@ -86,7 +86,7 @@ namespace Library.Sprite.Descriptor
         private Sprite CreateImageSprite(XElement spriteElem, ContentManager content)
         {
             string texture = GetAttribute(spriteElem, "Texture");
-            return content.Load<ImageSprite>(texture);
+            return content.Load<ImageSpriteTemplate>(texture).Create();
         }
 
         private Sprite CreateTextSprite(XElement spriteElem, ContentManager content)

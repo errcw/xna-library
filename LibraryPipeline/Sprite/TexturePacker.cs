@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
+using Microsoft.Xna.Framework.Content.Pipeline;
 
 namespace LibraryPipeline.Sprite
 {
@@ -28,15 +29,18 @@ namespace LibraryPipeline.Sprite
         /// </summary>
         /// <param name="textures">The textures to pack.</param>
         /// <returns>True if every texture was successfully packed; otherwise, false.</returns>
-        public bool Pack(List<Texture2DContent> textures)
+        public bool Pack(List<Texture2DContent> textures, ContentProcessorContext ctx)
         {
             _packed.Clear();
             _overflow.Clear();
 
             // sort the textures by area
+            ctx.Logger.LogImportantMessage("Sorting {0} textures", textures.Count);
             textures.Sort((a, b) =>
                 (a.Mipmaps[0].Width * a.Mipmaps[0].Height).CompareTo(
                  b.Mipmaps[0].Width * b.Mipmaps[0].Height));
+
+            textures.ForEach(t => ctx.Logger.LogImportantMessage("Texture {0} {1}x{2}", t.Name, t.Mipmaps[0].Width, t.Mipmaps[0].Height));
 
             // pack as many textures into the container as will fit
             Node root = new Node(new Rectangle(0, 0, _size, _size));
@@ -72,7 +76,7 @@ namespace LibraryPipeline.Sprite
         /// </summary>
         public List<KeyValuePair<Texture2DContent, Rectangle>> GetContents()
         {
-            return _packed;
+            return _packed.ToList(); // return a copy
         }
 
         /// <summary>
@@ -80,7 +84,7 @@ namespace LibraryPipeline.Sprite
         /// </summary>
         public List<Texture2DContent> GetOverflow()
         {
-            return _overflow;
+            return _overflow.ToList(); // return a copy
         }
 
         /// <summary>
@@ -129,17 +133,11 @@ namespace LibraryPipeline.Sprite
                     }
 
                     _child = new Node[2];
-
-                    if ((_box.Width - insert.Width) > (_box.Height - insert.Height)) // delta width > delta height
-                    {
-                        _child[0] = new Node(new Rectangle(_box.X, _box.Y, insert.Width, _box.Height));
-                        _child[1] = new Node(new Rectangle(_box.X + insert.Width, _box.Y, _box.Width - insert.Width, _box.Height));
-                    }
-                    else
-                    {
-                        _child[0] = new Node(new Rectangle(_box.X, _box.Y, insert.Width, insert.Height));
-                        _child[1] = new Node(new Rectangle(_box.X, _box.Y + insert.Height, _box.Width, _box.Height - insert.Height));
-                    }
+                    _child[0] = new Node(new Rectangle(_box.X, _box.Y, insert.Width, insert.Height));
+                    _child[1] =
+                        (_box.Width - insert.Width) > (_box.Height - insert.Height) // delta width > delta height
+                            ? new Node(new Rectangle(_box.X + insert.Width, _box.Y, _box.Width - insert.Width, _box.Height))
+                            : new Node(new Rectangle(_box.X, _box.Y + insert.Height, _box.Width, _box.Height - insert.Height));
 
                     return _child[0].Insert(insert);
                 }
@@ -147,7 +145,7 @@ namespace LibraryPipeline.Sprite
 
             private Rectangle _box; /// space occupied by this node
             private Node[] _child;  /// children of this node
-            private bool _occupied; /// if this node contains a box
+            private bool _occupied; /// if this node is filled
         }
 
         private int _size;

@@ -22,13 +22,13 @@ namespace LibraryPipeline.Sprite.Descriptor
 
         public override string GetRuntimeType(TargetPlatform targetPlatform)
         {
-            return "Library.Sprite.ImageSprite, " +
+            return "Library.Sprite.Pipeline.ImageSpriteTemplate, " +
                    "Library, Version=1.0.0.0, Culture=neutral";
         }
 
         public override string GetRuntimeReader(TargetPlatform targetPlatform)
         {
-            return "Library.Sprite.ImageSpriteReader, " +
+            return "Library.Sprite.Pipeline.ImageSpriteTemplateReader, " +
                    "Library, Version=1.0.0.0, Culture=neutral";
         }
     }

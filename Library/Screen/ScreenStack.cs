@@ -74,6 +74,7 @@ namespace Library.Screen
                 active.Hide(false);
             }
             _stackScreens.Add(screen);
+            screen.Stack = this;
             screen.Show(true);
         }
 

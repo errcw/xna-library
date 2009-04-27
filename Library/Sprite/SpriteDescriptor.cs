@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Library.Sprite;
 using Library.Animation;
 
-namespace Library.Sprite.Descriptor
+namespace Library.Sprite
 {
     /// <summary>
     /// Names the components of a sprite and its associated animations.

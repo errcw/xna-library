@@ -6,12 +6,12 @@ using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace LibraryPipeline.Sprite.Descriptor
+namespace LibraryPipeline.Sprite
 {
     /// <summary>
     /// Wraps the raw sprite descriptor XML.
     /// </summary>
-    public class SpriteDescriptorXml
+    public class SpriteDescriptorContent
     {
         /// <summary>
         /// The raw XML text.
@@ -22,7 +22,7 @@ namespace LibraryPipeline.Sprite.Descriptor
         /// Creates a new sprite descriptor XML wrapper.
         /// </summary>
         /// <param name="xml">The XML text.</param>
-        public SpriteDescriptorXml(string xml)
+        public SpriteDescriptorContent(string xml)
         {
             Xml = xml;
         }

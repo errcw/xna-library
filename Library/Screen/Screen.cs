@@ -29,6 +29,11 @@ namespace Library.Screen
         public ScreenState State { get; protected set; }
 
         /// <summary>
+        /// The screen stack on which this screen is placed.
+        /// </summary>
+        public ScreenStack Stack { get; internal set; }
+
+        /// <summary>
         /// If this screen should show the screens beneath it in the stack.
         /// </summary>
         public bool ShowBeneath { get; protected set; }
@@ -46,10 +51,8 @@ namespace Library.Screen
         /// <summary>
         /// Creates a new screen.
         /// </summary>
-        /// <param name="stack">The screen stack on which the screen is placed.</param>
-        public Screen(ScreenStack stack)
+        public Screen()
         {
-            _stack = stack;
             State = ScreenState.Inactive;
             ShowBeneath = false;
         }
@@ -100,7 +103,7 @@ namespace Library.Screen
         /// </summary>
         /// <param name="pushed">True if the screen was pushed on the top of the stack,
         /// false if it was shown by a newly popped screen.</param>
-        internal virtual void Show(bool pushed)
+        protected internal virtual void Show(bool pushed)
         {
             if (State == ScreenState.Active || State == ScreenState.TransitionOn)
             {
@@ -123,7 +126,7 @@ namespace Library.Screen
         /// </summary>
         /// <param name="popped">True if the screen was popped from the stack,
         /// false if it is obscured by a newly pushed screen.</param>
-        internal virtual void Hide(bool popped)
+        protected internal virtual void Hide(bool popped)
         {
             if (State == ScreenState.Inactive || State == ScreenState.TransitionOff)
             {
@@ -179,7 +182,5 @@ namespace Library.Screen
 
         private float _transitionElapsed = 0f;
         private bool _transitionStack;
-
-        protected ScreenStack _stack;
     }
 }

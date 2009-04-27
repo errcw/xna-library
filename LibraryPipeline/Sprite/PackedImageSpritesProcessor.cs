@@ -49,7 +49,7 @@ namespace LibraryPipeline.Sprite
         {
             TexturePacker packer = new TexturePacker((int)ContainerSize);
             List<Texture2DContent> textures = new List<Texture2DContent>();
-
+            
             foreach (var group in input.Groups)
             {
                 textures.Clear();
@@ -70,7 +70,7 @@ namespace LibraryPipeline.Sprite
                 int containerTextures = 0;
                 while (textures.Count > 0 && containerTextures < MaximumContainersPerGroup)
                 {
-                    packer.Pack(textures);
+                    packer.Pack(textures, context);
                     var packedTextures = packer.GetContents();
 
                     Texture2DContent containerTexture = CreateContainerTexture(packedTextures);
@@ -89,7 +89,7 @@ namespace LibraryPipeline.Sprite
                         ImageSpriteStub stub = new ImageSpriteStub(container, texturePosition);
                         context.WriteAsset(stub, pack.Key.Name);
 
-                        context.Logger.LogMessage("Packed {0} at {1}", pack.Key.Name, texturePosition);
+                        context.Logger.LogImportantMessage("Packed {0} at {1}", pack.Key.Name, texturePosition);
                     }
 
                     // repeat with the textures that did not fit
@@ -97,6 +97,7 @@ namespace LibraryPipeline.Sprite
                     containerTextures++;
                 }
 
+                // warn if we bailed out
                 if (containerTextures > MaximumContainersPerGroup)
                 {
                     context.Logger.LogImportantMessage(
