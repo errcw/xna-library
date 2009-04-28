@@ -20,5 +20,17 @@ namespace Library.Extensions
         {
             return Math.Abs(a - b) <= epsilon;
         }
+
+        /// <summary>
+        /// Restricts a value to be within a specified range.
+        /// </summary>
+        /// <param name="value">The value to clamp.</param>
+        /// <param name="min">The minimum value. If value is less than min, min will be returned.</param>
+        /// <param name="max">The maximum value. If value is greater than max, max will be returned.</param>
+        /// <returns>The clamped value.</returns>
+        public static int Clamp(int value, int min, int max)
+        {
+            return (value < min) ? min : ((value > max) ? max : value);
+        }
     }
 }

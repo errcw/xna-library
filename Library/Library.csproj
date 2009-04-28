@@ -92,6 +92,7 @@
     <Compile Include="Animation\SequentialAnimation.cs" />
     <Compile Include="Extensions\GameTimeExtensions.cs" />
     <Compile Include="Extensions\MathHelperExtensions.cs" />
+    <Compile Include="Extensions\PlayerIndexExtensions.cs" />
     <Compile Include="Input\ControlState.cs" />
     <Compile Include="Input\ControlPosition.cs" />
     <Compile Include="Input\Input.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Sprite\SpriteAnimation.cs" />
     <Compile Include="Sprite\SpriteDescriptor.cs" />
     <Compile Include="Sprite\TextSprite.cs" />
+    <Compile Include="Storage\StorageDeviceManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
