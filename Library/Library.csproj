@@ -90,6 +90,8 @@
     <Compile Include="Animation\IAnimation.cs" />
     <Compile Include="Animation\Interpolation.cs" />
     <Compile Include="Animation\SequentialAnimation.cs" />
+    <Compile Include="Components\FPSOverlayComponent.cs" />
+    <Compile Include="Components\UnsafeAreaOverlayComponent.cs" />
     <Compile Include="Components\TrialModeObserverComponent.cs" />
     <Compile Include="Extensions\GameTimeExtensions.cs" />
     <Compile Include="Extensions\MathHelperExtensions.cs" />

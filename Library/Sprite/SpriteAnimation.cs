@@ -45,10 +45,6 @@ namespace Library.Sprite
         /// <returns>False after the duration has elapsed, true at all times before.</returns>
         public bool Update(float time)
         {
-            if (_elapsed >= _duration)
-            {
-                return false;
-            }
             _elapsed += time;
             if (_elapsed < _duration)
             {

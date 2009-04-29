@@ -120,7 +120,7 @@ namespace Library.Sprite.Pipeline
             XAttribute scaleAttr = spriteElem.Attribute("Scale");
             if (scaleAttr != null)
             {
-                sprite.Origin = ParseVector2(scaleAttr.Value);
+                sprite.Scale = ParseVector2(scaleAttr.Value);
             }
             XAttribute colorAttr = spriteElem.Attribute("Color");
             if (colorAttr != null)

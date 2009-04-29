@@ -45,6 +45,10 @@ namespace Library.Storage
         public bool PromptForDevice { get; set; }
     }
 
+    /// <summary>
+    /// Handles storage devices.
+    /// </summary>
+    /// <remarks>Adapted from http://www.xnawiki.com/index.php/StorageDeviceManager </remarks>
     public class StorageDeviceManager : GameComponent
     {
         /// <summary>
