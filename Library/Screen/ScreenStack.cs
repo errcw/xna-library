@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using Library.Extensions;
 using Library.Input;
 
 namespace Library.Screen
@@ -11,7 +12,7 @@ namespace Library.Screen
     /// <summary>
     /// A stack of screens. The stack is drawn from bottom to top. Only the top screen is active and updated.
     /// </summary>
-    public class ScreenStack
+    public class ScreenStack : DrawableGameComponent
     {
         /// <summary>
         /// The screen at the top of the stack.
@@ -25,22 +26,37 @@ namespace Library.Screen
         }
 
         /// <summary>
+        /// Creates a new stack of screens.
+        /// </summary>
+        /// <param name="game">The game context.</param>
+        public ScreenStack(Game game) : base(game)
+        {
+        }
+
+        /// <summary>
+        /// Creates the sprite batch used to draw this stack.
+        /// </summary>
+        protected override void LoadContent()
+        {
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+        }
+
+        /// <summary>
         /// Updates the active screen.
         /// </summary>
-        /// <param name="time">The elapsed time, in seconds, since the last update.</param>
-        /// <param name="input">The current input state.</param>
-        public void Update(float time)
+        /// <param name="gameTime">A snapshot of timing values.</param>
+        public override void Update(GameTime gameTime)
         {
-            _stackScreens.ForEach(screen => screen.Update(time));
-            _poppedScreens.ForEach(screen => screen.Update(time));
+            _stackScreens.ForEach(screen => screen.Update(gameTime.GetElapsedSeconds()));
+            _poppedScreens.ForEach(screen => screen.Update(gameTime.GetElapsedSeconds()));
             _poppedScreens.RemoveAll(screen => screen.State == ScreenState.Inactive);
         }
 
         /// <summary>
         /// Draws the visible screens in the stack.
         /// </summary>
-        /// <param name="spriteBatch">The sprite batch to draw in.</param>
-        public void Draw(SpriteBatch spriteBatch)
+        /// <param name="gameTime">A snapshot of timing values.</param>
+        public override void Draw(GameTime gameTime)
         {
             if (_stackScreens.Count > 0)
             {
@@ -54,12 +70,12 @@ namespace Library.Screen
                 // draw from the bottom up
                 for (; bottom < _stackScreens.Count; bottom++)
                 {
-                    _stackScreens[bottom].Draw(spriteBatch);
+                    _stackScreens[bottom].Draw(_spriteBatch);
                 }
             }
 
             // draw the screens transitioning off
-            _poppedScreens.ForEach(s => s.Draw(spriteBatch));
+            _poppedScreens.ForEach(s => s.Draw(_spriteBatch));
         }
 
         /// <summary>
@@ -90,7 +106,7 @@ namespace Library.Screen
             {
                 active.Hide(true);
                 _stackScreens.RemoveAt(_stackScreens.Count - 1);
-                _poppedScreens.Add(active);
+                _poppedScreens.Insert(0, active);
             }
 
             // show the new active screen
@@ -114,5 +130,7 @@ namespace Library.Screen
 
         private List<Screen> _stackScreens = new List<Screen>();
         private List<Screen> _poppedScreens = new List<Screen>();
+
+        private SpriteBatch _spriteBatch;
     }
 }

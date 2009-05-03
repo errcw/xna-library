@@ -246,7 +246,11 @@ namespace Library.Storage
                     }
                 }
             }
-            catch (Exception e)
+            catch (GamerServicesNotAvailableException e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+            }
+            catch (GuideAlreadyVisibleException e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
             }

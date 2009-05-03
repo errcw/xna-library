@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+
+using Library.Extensions;
 
 namespace Library.Input
 {
     /// <summary>
     /// Polls for input from one controller.
     /// </summary>
-    public class Input
+    public class Input : GameComponent
     {
         /// <summary>
         /// The currently active controller (i.e., the one being polled).
@@ -23,16 +24,24 @@ namespace Library.Input
         public event EventHandler<EventArgs> ControllerDisconnected;
 
         /// <summary>
+        /// Creates a new input poller.
+        /// </summary>
+        /// <param name="game">The game context.</param>
+        public Input(Game game) : base(game)
+        {
+        }
+
+        /// <summary>
         /// Polls the current input state.
         /// </summary>
         /// <param name="time">The elapsed time, in seconds, since the last update.</param>
-        public void Update(float time)
+        public override void Update(GameTime gameTime)
         {
             PollControllerConnectivity();
             if (Controller != null)
             {
-                UpdateControls(time);
-                UpdateVibration(time);
+                UpdateControls(gameTime.GetElapsedSeconds());
+                UpdateVibration(gameTime.GetElapsedSeconds());
             }
         }
 
