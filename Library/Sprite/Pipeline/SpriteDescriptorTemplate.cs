@@ -7,9 +7,11 @@ using System.Xml;
 using System.Xml.Linq;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
+using Library.Audio;
 using Library.Animation;
 
 namespace Library.Sprite.Pipeline
@@ -23,16 +25,18 @@ namespace Library.Sprite.Pipeline
         /// Creates a new descriptor template.
         /// </summary>
         /// <param name="descriptorXml">An XML element from the content pipeline describing the sprite.</param>
-        public SpriteDescriptorTemplate(XElement descriptorXml)
+        /// <param name="content">The content manager used to load this template.</param>
+        public SpriteDescriptorTemplate(XElement descriptorXml, ContentManager content)
         {
             _xml = descriptorXml;
+            _content = content;
         }
 
         /// <summary>
         /// Creates a descriptor from this template.
         /// </summary>
         /// <param name="content">The content manager to load the descriptor.</param>
-        public SpriteDescriptor Create(ContentManager content)
+        public SpriteDescriptor Create()
         {
             XElement rootSpriteElem = _xml.Element("Sprites");
             if (rootSpriteElem == null)
@@ -40,7 +44,7 @@ namespace Library.Sprite.Pipeline
                 throw new ContentLoadException("Sprite descriptor missing Sprites element");
             }
             _sprites.Clear();
-            Sprite root = CreateSprite(rootSpriteElem, content);
+            Sprite root = CreateSprite(rootSpriteElem);
 
             XElement rootAnimElem = _xml.Element("Animations");
             if (rootAnimElem != null)
@@ -57,15 +61,15 @@ namespace Library.Sprite.Pipeline
                 new Dictionary<string, IAnimation>(_animations));
         }
 
-        private Sprite CreateSprite(XElement spriteElem, ContentManager content)
+        private Sprite CreateSprite(XElement spriteElem)
         {
             Sprite sprite = null;
             switch (spriteElem.Name.LocalName)
             {
                 case "Sprites": goto case "Composite";
-                case "Composite": sprite = CreateCompositeSprite(spriteElem, content); break;
-                case "Image": sprite = CreateImageSprite(spriteElem, content); break;
-                case "Text": sprite = CreateTextSprite(spriteElem, content); break;
+                case "Composite": sprite = CreateCompositeSprite(spriteElem); break;
+                case "Image": sprite = CreateImageSprite(spriteElem); break;
+                case "Text": sprite = CreateTextSprite(spriteElem); break;
                 default: throw new ContentLoadException("Unsupported sprite type " + spriteElem.Name);
             }
             ReadSpriteAttributes(spriteElem, sprite);
@@ -73,28 +77,28 @@ namespace Library.Sprite.Pipeline
             return sprite;
         }
 
-        private Sprite CreateCompositeSprite(XElement spriteElem, ContentManager content)
+        private Sprite CreateCompositeSprite(XElement spriteElem)
         {
             CompositeSprite composite = new CompositeSprite();
             foreach (XElement childSpriteElem in spriteElem.Elements())
             {
-                composite.Add(CreateSprite(childSpriteElem, content));
+                composite.Add(CreateSprite(childSpriteElem));
             }
             return composite;
         }
 
-        private Sprite CreateImageSprite(XElement spriteElem, ContentManager content)
+        private Sprite CreateImageSprite(XElement spriteElem)
         {
             string texture = GetAttribute(spriteElem, "Texture");
-            return content.Load<ImageSpriteTemplate>(texture).Create();
+            return _content.Load<ImageSpriteTemplate>(texture).Create();
         }
 
-        private Sprite CreateTextSprite(XElement spriteElem, ContentManager content)
+        private Sprite CreateTextSprite(XElement spriteElem)
         {
             string font = GetAttribute(spriteElem, "Font");
             XAttribute textAttr = spriteElem.Attribute("Text");
             string text = (textAttr != null) ? textAttr.Value : String.Empty;
-            return new TextSprite(content.Load<SpriteFont>(font), text);
+            return new TextSprite(_content.Load<SpriteFont>(font), text);
         }
 
         /// <summary>
@@ -150,6 +154,7 @@ namespace Library.Sprite.Pipeline
                 case "Rotation": animation = CreateRotationAnimation(animationElem); break;
                 case "Scale": animation = CreateScaleAnimation(animationElem); break;
                 case "Color": animation = CreateColorAnimation(animationElem); break;
+                case "Sound": animation = CreateSoundAnimation(animationElem); break;
                 default: throw new ContentLoadException("Unsupported animation type " + animationElem.Name.LocalName);
             }
             RegisterItem(animationElem, animation, _animations);
@@ -222,6 +227,16 @@ namespace Library.Sprite.Pipeline
             Color target = ParseColor(GetAttribute(animationElem, "Target"));
             Ease easing = ParseEasing(GetAttribute(animationElem, "Easing"));
             return new ColorAnimation(sprite, target, duration, Interpolation.InterpolateColor(easing));
+        }
+
+        private IAnimation CreateSoundAnimation(XElement animationElem)
+        {
+            SoundEffect sound = _content.Load<SoundEffect>(GetAttribute(animationElem, "Sound"));
+            float volume = ParseFloat(GetAttribute(animationElem, "Volume"));
+            float pitch = ParseFloat(GetAttribute(animationElem, "Pitch"));
+            float pan = ParseFloat(GetAttribute(animationElem, "Pan"));
+            bool loop = ParseBool(GetAttribute(animationElem, "Loop"));
+            return new AudioAnimation(sound, volume, pitch, pan, loop);
         }
 
         /// <summary>
@@ -336,5 +351,6 @@ namespace Library.Sprite.Pipeline
         private Dictionary<string, IAnimation> _animations = new Dictionary<string, IAnimation>();
 
         private XElement _xml;
+        private ContentManager _content;
     }
 }

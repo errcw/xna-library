@@ -24,7 +24,7 @@ namespace Library.Sprite.Pipeline
         protected override SpriteDescriptorTemplate Read(ContentReader input, SpriteDescriptorTemplate existingInstance)
         {
             XElement descriptorXml = XElement.Load(new StringReader(input.ReadString()));
-            return new SpriteDescriptorTemplate(descriptorXml);
+            return new SpriteDescriptorTemplate(descriptorXml, input.ContentManager);
         }
     }
 }
