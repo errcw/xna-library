@@ -149,9 +149,9 @@ namespace Library.Input
         /// <summary>
         /// Monitors the connected state of the active controller.
         /// </summary>
+        [System.Diagnostics.Conditional("XBOX")]
         private void PollControllerConnectivity()
         {
-#if XBOX
             if (Controller != null)
             {
                 // check if the controller is disconnected
@@ -175,7 +175,6 @@ namespace Library.Input
                     Controller = _prevController;
                 }
             }
-#endif
         }
 
         /// <summary>

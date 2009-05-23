@@ -61,6 +61,7 @@
     <Compile Include="Animation\Interpolation.cs" />
     <Compile Include="Animation\SequentialAnimation.cs" />
     <Compile Include="Audio\AudioAnimation.cs" />
+    <Compile Include="Components\ExceptionDebugGame.cs" />
     <Compile Include="Components\FPSOverlayComponent.cs" />
     <Compile Include="Components\TrialModeObserverComponent.cs" />
     <Compile Include="Components\UnsafeAreaOverlayComponent.cs" />
