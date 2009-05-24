@@ -1,4 +1,11 @@
-﻿/*! \namespace Library.Animation
+﻿/*! \mainpage
+    
+A tiny library for developing Xbox 360 games with XNA. XNALibrary is a set of classes
+designed to simplify writing games in XNA. The library contains everything you need for
+graphics, sound, input, content, and utility.
+*/
+
+/*! \namespace Library.Animation
     \brief Animation of sprites and other objects.
     
 Animates arbitrary things.
