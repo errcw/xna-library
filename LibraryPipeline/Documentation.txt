@@ -1,0 +1,11 @@
+﻿/*! \namespace LibraryPipeline.Extensions
+    \brief Extensions to content pipeline classes.
+    
+A set of useful extensions to content pipeline classes.
+*/
+
+/*! \namespace LibraryPipeline.Sprite
+    \brief Importers and processors for Sprites.
+    
+Consumes images and produces Library.Sprite.Pipeline.ImageSpriteTemplates.
+*/
