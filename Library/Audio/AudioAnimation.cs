@@ -31,11 +31,11 @@ namespace Library.Audio
         /// <param name="loop">Whether to loop the sound indefinitely.</param>
         public AudioAnimation(SoundEffect effect, float volume, float pitch, float pan, bool loop)
         {
-            _effect = effect;
-            _volume = volume;
-            _pitch = pitch;
-            _pan = pan;
-            _loop = loop;
+            _instance = effect.CreateInstance();
+            _instance.Volume = volume;
+            _instance.Pitch = pitch;
+            _instance.Pan = pan;
+            _instance.IsLooped = loop;
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Library.Audio
         /// </summary>
         public void Start()
         {
-            _instance = _effect.Play(_volume, _pitch, _pan, _loop);
+            _instance.Play();
         }
 
         /// <summary>
@@ -56,12 +56,6 @@ namespace Library.Audio
             return (_instance.State == SoundState.Playing);
         }
 
-        private SoundEffect _effect;
         private SoundEffectInstance _instance;
-
-        private float _volume;
-        private float _pitch;
-        private float _pan;
-        private bool _loop;
     }
 }
