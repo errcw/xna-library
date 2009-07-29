@@ -7,6 +7,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+using Library.Properties;
+
 namespace Library.Components
 {
     /// <summary>
@@ -55,22 +57,22 @@ namespace Library.Components
             _spriteBatch.Begin();
             _spriteBatch.DrawString(
                  _font,
-                 "**** CRASH LOG ****",
+                 Resources.ExceptionHeader,
                  new Vector2(100f, 100f),
                  Color.White);
             _spriteBatch.DrawString(
                  _font,
-                 "Press Back to Exit",
+                 Resources.ExceptionExitPrompt,
                  new Vector2(100f, 120f),
                  Color.White);
             _spriteBatch.DrawString(
                  _font,
-                 string.Format("Exception: {0}", Exception.Message),
+                 string.Format(Resources.ExceptionException, Exception.Message),
                  new Vector2(100f, 140f),
                  Color.White);
             _spriteBatch.DrawString(
                  _font,
-                 string.Format("Stack Trace:\n{0}", Exception.StackTrace),
+                 string.Format(Resources.ExceptionTrace, Exception.StackTrace),
                  new Vector2(100f, 160f),
                  Color.White);
             _spriteBatch.End();
