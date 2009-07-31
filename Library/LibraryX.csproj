@@ -97,7 +97,7 @@
     <Compile Include="Storage\PlayerStorage.cs" />
     <Compile Include="Storage\SharedStorage.cs" />
     <Compile Include="Storage\Storage.cs" />
-    <Compile Include="Storage\StorageDeviceManager.cs" />
+    <Compile Include="Storage\XmlStoreable.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
