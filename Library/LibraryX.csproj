@@ -65,6 +65,7 @@
     <Compile Include="Components\FPSOverlayComponent.cs" />
     <Compile Include="Components\TrialModeObserverComponent.cs" />
     <Compile Include="Components\UnsafeAreaOverlayComponent.cs" />
+    <Compile Include="Extensions\GameExtensions.cs" />
     <Compile Include="Extensions\GameTimeExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\MathHelperExtensions.cs" />

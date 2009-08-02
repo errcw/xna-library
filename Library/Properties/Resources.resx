@@ -124,7 +124,19 @@
     <value>Press Back to Exit</value>
   </data>
   <data name="ExceptionHeader" xml:space="preserve">
-    <value>**Crash Log **</value>
+    <value>EXCEPTION DETAILS</value>
+  </data>
+  <data name="ExceptionMessage" xml:space="preserve">
+    <value>The game experienced an unexpected error and had to end.</value>
+  </data>
+  <data name="ExceptionMessageDebug" xml:space="preserve">
+    <value>View Error Details</value>
+  </data>
+  <data name="ExceptionMessageExit" xml:space="preserve">
+    <value>Exit to Dashboard</value>
+  </data>
+  <data name="ExceptionMessageTitle" xml:space="preserve">
+    <value>Unexpected Error</value>
   </data>
   <data name="ExceptionTrace" xml:space="preserve">
     <value>Stack Trace: {0}</value>

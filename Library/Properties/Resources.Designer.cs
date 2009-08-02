@@ -79,11 +79,47 @@ namespace Library.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to **Crash Log **.
+        ///   Looks up a localized string similar to EXCEPTION DETAILS.
         /// </summary>
         internal static string ExceptionHeader {
             get {
                 return ResourceManager.GetString("ExceptionHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The game experienced an unexpected error and had to end..
+        /// </summary>
+        internal static string ExceptionMessage {
+            get {
+                return ResourceManager.GetString("ExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View Error Details.
+        /// </summary>
+        internal static string ExceptionMessageDebug {
+            get {
+                return ResourceManager.GetString("ExceptionMessageDebug", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit to Dashboard.
+        /// </summary>
+        internal static string ExceptionMessageExit {
+            get {
+                return ResourceManager.GetString("ExceptionMessageExit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected Error.
+        /// </summary>
+        internal static string ExceptionMessageTitle {
+            get {
+                return ResourceManager.GetString("ExceptionMessageTitle", resourceCulture);
             }
         }
         

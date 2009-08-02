@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -31,7 +29,17 @@ namespace Library.Components
             Exception = exception;
             FontName = "Fonts/TextSmall";
 
-            new GraphicsDeviceManager(this);
+            new GraphicsDeviceManager(this)
+            {
+                PreferredBackBufferWidth = 1280,
+                PreferredBackBufferHeight = 720
+            };
+
+            // do not add this as a component because we do not want it to be
+            // reinitialized if the faulting game has already initialized it;
+            // instead we only want to call Update on it
+            _services = new GamerServicesComponent(this);
+
             Content.RootDirectory = "Content";
         }
 
@@ -43,10 +51,46 @@ namespace Library.Components
 
         protected override void Update(GameTime gameTime)
         {
+            if (!_messageDisplayed)
+            {
+                try
+                {
+                    if (!Guide.IsVisible)
+                    {
+                        Guide.BeginShowMessageBox(
+                            PlayerIndex.One,
+                            Resources.ExceptionMessageTitle,
+                            Resources.ExceptionMessage,
+                            new string[] { Resources.ExceptionMessageExit,
+                                           Resources.ExceptionMessageDebug },
+                            0,
+                            MessageBoxIcon.Error,
+                            result =>
+                            {
+                                int? choice = Guide.EndShowMessageBox(result);
+                                if (choice.HasValue && choice.Value == 1)
+                                {
+                                    _showException = true;
+                                }
+                                else
+                                {
+                                    Exit();
+                                }
+                            },
+                            null);
+                        _messageDisplayed = true;
+                    }
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e);
+                }
+            }
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
             {
                 Exit();
             }
+            _services.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -80,9 +124,13 @@ namespace Library.Components
             base.Draw(gameTime);
         }
 
-       private SpriteBatch _spriteBatch;
-       private SpriteFont _font;
+        private bool _messageDisplayed = false;
 
-       private readonly Exception Exception;
+        private SpriteBatch _spriteBatch;
+        private SpriteFont _font;
+
+        private GamerServicesComponent _services;
+
+        private readonly Exception Exception;
     }
 }
