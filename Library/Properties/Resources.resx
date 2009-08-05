@@ -142,18 +142,18 @@
     <value>Stack Trace: {0}</value>
   </data>
   <data name="StoragePromptReselectCancelled" xml:space="preserve">
-    <value>No storage device was selected. You can continue without a device, but you will not be able to save. Would you like to select a storage device?</value>
+    <value>No storage device selected. Continue without saving?</value>
   </data>
   <data name="StoragePromptReselectDisconnected" xml:space="preserve">
-    <value>The storage device was disconnected. You can continue without a device, but you will not be able to save. Would you like to select a storage device?\n\nNote: if you only have one remaining storage device on the system (e.g. only a hard drive) the device will be selected automatically and no prompt will appear.</value>
+    <value>The selected storage device has been removed. Continue without saving?</value>
   </data>
   <data name="StoragePromptReselectNo" xml:space="preserve">
-    <value>No. Continue without device</value>
+    <value>No</value>
   </data>
   <data name="StoragePromptReselectTitle" xml:space="preserve">
     <value>Reselect Storage Device?</value>
   </data>
   <data name="StoragePromptReselectYes" xml:space="preserve">
-    <value>Yes. Select new device.</value>
+    <value>Yes</value>
   </data>
 </root>

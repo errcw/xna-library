@@ -207,7 +207,7 @@ namespace Library.Storage
         							new string[] {
                                         Resources.StoragePromptReselectYes,
                                         Resources.StoragePromptReselectNo },
-        							0,
+        							1,
         							MessageBoxIcon.None,
         							ReselectPromptCallback,
         							null);
@@ -221,7 +221,7 @@ namespace Library.Storage
         							new string[] {
                                         Resources.StoragePromptReselectYes,
                                         Resources.StoragePromptReselectNo },
-        							0,
+        							1,
         							MessageBoxIcon.None,
         							ReselectPromptCallback,
         							null);
@@ -301,8 +301,8 @@ namespace Library.Storage
         {
         	int? choice = Guide.EndShowMessageBox(ar);
 
-        	// get the device if the user chose the first option
-        	_state = choice.HasValue && choice.Value == 0
+        	// get the device if the user chose the second option
+        	_state = choice.HasValue && choice.Value == 1
         		? StoragePromptState.ShowSelector
         		: StoragePromptState.None;
 

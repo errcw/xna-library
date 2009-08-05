@@ -68,11 +68,7 @@ namespace Library.Components
                             result =>
                             {
                                 int? choice = Guide.EndShowMessageBox(result);
-                                if (choice.HasValue && choice.Value == 1)
-                                {
-                                    _showException = true;
-                                }
-                                else
+                                if (choice.HasValue && choice.Value == 0)
                                 {
                                     Exit();
                                 }

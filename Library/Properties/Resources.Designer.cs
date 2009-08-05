@@ -133,7 +133,7 @@ namespace Library.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No storage device was selected. You can continue without a device, but you will not be able to save. Would you like to select a storage device?.
+        ///   Looks up a localized string similar to No storage device selected. Continue without saving?.
         /// </summary>
         internal static string StoragePromptReselectCancelled {
             get {
@@ -142,7 +142,7 @@ namespace Library.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The storage device was disconnected. You can continue without a device, but you will not be able to save. Would you like to select a storage device?\n\nNote: if you only have one remaining storage device on the system (e.g. only a hard drive) the device will be selected automatically and no prompt will appear..
+        ///   Looks up a localized string similar to The selected storage device has been removed. Continue without saving?.
         /// </summary>
         internal static string StoragePromptReselectDisconnected {
             get {
@@ -151,7 +151,7 @@ namespace Library.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No. Continue without device.
+        ///   Looks up a localized string similar to No.
         /// </summary>
         internal static string StoragePromptReselectNo {
             get {
@@ -169,7 +169,7 @@ namespace Library.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Yes. Select new device..
+        ///   Looks up a localized string similar to Yes.
         /// </summary>
         internal static string StoragePromptReselectYes {
             get {
