@@ -70,7 +70,7 @@ namespace LibraryPipeline.Sprite
                 int containerTextures = 0;
                 while (textures.Count > 0 && containerTextures < MaximumContainersPerGroup)
                 {
-                    packer.Pack(textures, context);
+                    packer.Pack(textures);
                     var packedTextures = packer.GetContents();
 
                     Texture2DContent containerTexture = CreateContainerTexture(packedTextures);

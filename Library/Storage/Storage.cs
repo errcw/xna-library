@@ -101,10 +101,10 @@ namespace Library.Storage
         }
 
         /// <summary>
-        /// Saves a set of IStoredData objects.
+        /// Determines if an IStoredData object is already saved.
         /// </summary>
-        /// <param name="saveData">The objects to save.</param>
-        public void Save(params IStoreable[] data)
+        /// <param name="storeable">The object to query.</param>
+        public bool Exists(IStoreable storeable)
         {
             if (!IsValid)
             {
@@ -113,22 +113,15 @@ namespace Library.Storage
 
         	using (var container = _storageDevice.OpenContainer(StorageContainerName))
         	{
-        		foreach (var datum in data)
-        		{
-        			var path = Path.Combine(container.Path, datum.FileName);
-                    using (StreamWriter writer = new StreamWriter(path))
-                    {
-                        datum.Save(writer.BaseStream);
-                    }
-        		}
+                return File.Exists(Path.Combine(container.Path, storeable.FileName));
         	}
         }
 
         /// <summary>
-        /// Loads a set of IStoredData objects
+        /// Saves an IStoredData object to the current storage device.
         /// </summary>
-        /// <param name="saveData">The objects to load.</param>
-        public void Load(params IStoreable[] data)
+        /// <param name="storeable">The object to save.</param>
+        public void Save(IStoreable storeable)
         {
             if (!IsValid)
             {
@@ -137,22 +130,40 @@ namespace Library.Storage
 
         	using (var container = _storageDevice.OpenContainer(StorageContainerName))
         	{
-        		foreach (var datum in data)
-        		{
-        			var path = Path.Combine(container.Path, datum.FileName);
-                    using (StreamReader reader = new StreamReader(path))
-                    {
-                        datum.Load(reader.BaseStream);
-                    }
-        		}
+    			var path = Path.Combine(container.Path, storeable.FileName);
+                using (StreamWriter writer = new StreamWriter(path))
+                {
+                    storeable.Save(writer.BaseStream);
+                }
         	}
         }
 
         /// <summary>
-        /// Deletes a set of ISaveData object.
+        /// Loads an IStoredData object from the current storage device.
         /// </summary>
-        /// <param name="saveData">The objects to delete.</param>
-        public void Delete(params IStoreable[] data)
+        /// <param name="storeable">The object to load.</param>
+        public void Load(IStoreable storeable)
+        {
+            if (!IsValid)
+            {
+                throw new InvalidOperationException("StorageDevice is not valid.");
+            }
+
+        	using (var container = _storageDevice.OpenContainer(StorageContainerName))
+        	{
+    			var path = Path.Combine(container.Path, storeable.FileName);
+                using (StreamReader reader = new StreamReader(path))
+                {
+                    storeable.Load(reader.BaseStream);
+                }
+        	}
+        }
+
+        /// <summary>
+        /// Deletes an ISaveData object from the current storage device.
+        /// </summary>
+        /// <param name="storeable">The objects to delete.</param>
+        public void Delete(IStoreable storeable)
         {
             if (!IsValid)
             {
@@ -161,10 +172,7 @@ namespace Library.Storage
 
             using (var container = _storageDevice.OpenContainer(StorageContainerName))
             {
-                foreach (var datum in data)
-                {
-                    File.Delete(Path.Combine(container.Path, datum.FileName));
-                }
+                File.Delete(Path.Combine(container.Path, storeable.FileName));
             }
         } 
 

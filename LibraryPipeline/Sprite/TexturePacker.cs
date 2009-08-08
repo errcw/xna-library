@@ -29,18 +29,15 @@ namespace LibraryPipeline.Sprite
         /// </summary>
         /// <param name="textures">The textures to pack.</param>
         /// <returns>True if every texture was successfully packed; otherwise, false.</returns>
-        public bool Pack(List<Texture2DContent> textures, ContentProcessorContext ctx)
+        public bool Pack(List<Texture2DContent> textures)
         {
             _packed.Clear();
             _overflow.Clear();
 
             // sort the textures by area
-            ctx.Logger.LogImportantMessage("Sorting {0} textures", textures.Count);
             textures.Sort((a, b) =>
                 (a.Mipmaps[0].Width * a.Mipmaps[0].Height).CompareTo(
                  b.Mipmaps[0].Width * b.Mipmaps[0].Height));
-
-            textures.ForEach(t => ctx.Logger.LogImportantMessage("Texture {0} {1}x{2}", t.Name, t.Mipmaps[0].Width, t.Mipmaps[0].Height));
 
             // pack as many textures into the container as will fit
             Node root = new Node(new Rectangle(0, 0, _size, _size));
