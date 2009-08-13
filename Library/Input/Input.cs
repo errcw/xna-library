@@ -29,6 +29,7 @@ namespace Library.Input
         /// <param name="game">The game context.</param>
         public Input(Game game) : base(game)
         {
+            Controller = null;
         }
 
         /// <summary>
@@ -38,7 +39,7 @@ namespace Library.Input
         public override void Update(GameTime gameTime)
         {
             PollControllerConnectivity();
-            if (Controller != null)
+            if (Controller.HasValue)
             {
                 UpdateControls(gameTime.GetElapsedSeconds());
                 UpdateVibration(gameTime.GetElapsedSeconds());
@@ -152,7 +153,7 @@ namespace Library.Input
         [System.Diagnostics.Conditional("XBOX")]
         private void PollControllerConnectivity()
         {
-            if (Controller != null)
+            if (Controller.HasValue)
             {
                 // check if the controller is disconnected
                 GamePadState padState = GamePad.GetState(Controller.Value);
@@ -166,13 +167,13 @@ namespace Library.Input
                     }
                 }
             }
-            else
+            else if (_prevController.HasValue)
             {
                 // check if the controller is reconnected
-                GamePadState padState = GamePad.GetState(_prevController);
+                GamePadState padState = GamePad.GetState(_prevController.Value);
                 if (padState.IsConnected)
                 {
-                    Controller = _prevController;
+                    Controller = _prevController.Value;
                 }
             }
         }
@@ -210,6 +211,6 @@ namespace Library.Input
         private Dictionary<ControlState, PollIsDown> _stateCtrls = new Dictionary<ControlState, PollIsDown>();
         private Dictionary<ControlPosition, PollPosition> _positionCtrls = new Dictionary<ControlPosition, PollPosition>();
 
-        private PlayerIndex _prevController;
+        private PlayerIndex? _prevController;
     }
 }

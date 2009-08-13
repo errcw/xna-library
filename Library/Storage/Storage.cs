@@ -194,57 +194,55 @@ namespace Library.Storage
                 }
         		HandleEventArgResults();
         	}
-        	else if (!deviceIsConnected)
-        	{
-        		try
-        		{
-        			if (!Guide.IsVisible)
-        			{
-        				switch (_state)
-        				{
-        					case StoragePromptState.ShowSelector:
-        						_state = StoragePromptState.None;
-        						GetStorageDevice(StorageDeviceSelectorCallback);
-        						break;
 
-        					case StoragePromptState.PromptForCanceled:
-        						Guide.BeginShowMessageBox(
-        							EventArgs.PlayerToPrompt,
-        							Resources.StoragePromptReselectTitle,
-        							Resources.StoragePromptReselectCancelled,
-        							new string[] {
-                                        Resources.StoragePromptReselectYes,
-                                        Resources.StoragePromptReselectNo },
-        							1,
-        							MessageBoxIcon.None,
-        							ReselectPromptCallback,
-        							null);
-        						break;
+    		try
+    		{
+    			if (!Guide.IsVisible)
+    			{
+    				switch (_state)
+    				{
+    					case StoragePromptState.ShowSelector:
+    						_state = StoragePromptState.None;
+    						GetStorageDevice(StorageDeviceSelectorCallback);
+    						break;
 
-        					case StoragePromptState.PromptForDisconnected:
-        						Guide.BeginShowMessageBox(
-        							EventArgs.PlayerToPrompt,
-        							Resources.StoragePromptReselectTitle,
-        							Resources.StoragePromptReselectDisconnected,
-        							new string[] {
-                                        Resources.StoragePromptReselectYes,
-                                        Resources.StoragePromptReselectNo },
-        							1,
-        							MessageBoxIcon.None,
-        							ReselectPromptCallback,
-        							null);
-        						break;
+    					case StoragePromptState.PromptForCanceled:
+    						Guide.BeginShowMessageBox(
+    							EventArgs.PlayerToPrompt,
+    							Resources.StoragePromptReselectTitle,
+    							Resources.StoragePromptReselectCancelled,
+    							new string[] {
+                                    Resources.StoragePromptReselectYes,
+                                    Resources.StoragePromptReselectNo },
+    							1,
+    							MessageBoxIcon.None,
+    							ReselectPromptCallback,
+    							null);
+    						break;
 
-        					default:
-        						break;
-        				}
-        			}
-        		}
-        		catch (GuideAlreadyVisibleException)
-        		{
-        			// swallow the exception
-        		}
-        	}
+    					case StoragePromptState.PromptForDisconnected:
+    						Guide.BeginShowMessageBox(
+    							EventArgs.PlayerToPrompt,
+    							Resources.StoragePromptReselectTitle,
+    							Resources.StoragePromptReselectDisconnected,
+    							new string[] {
+                                    Resources.StoragePromptReselectYes,
+                                    Resources.StoragePromptReselectNo },
+    							1,
+    							MessageBoxIcon.None,
+    							ReselectPromptCallback,
+    							null);
+    						break;
+
+    					default:
+    						break;
+    				}
+    			}
+    		}
+    		catch (GuideAlreadyVisibleException)
+    		{
+    			// swallow the exception
+    		}
 
         	_deviceWasConnected = deviceIsConnected;
         }
