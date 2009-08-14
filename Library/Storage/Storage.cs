@@ -186,7 +186,6 @@ namespace Library.Storage
 
         	if (!deviceIsConnected && _deviceWasConnected)
         	{
-        		// if the device was disconnected, fire an event and handle result
                 PrepareEventArgs(EventArgs);
                 if (DeviceDisconnected != null)
                 {
@@ -239,9 +238,9 @@ namespace Library.Storage
     				}
     			}
     		}
-    		catch (GuideAlreadyVisibleException)
+    		catch (GuideAlreadyVisibleException e)
     		{
-    			// swallow the exception
+                System.Diagnostics.Debug.WriteLine(e);
     		}
 
         	_deviceWasConnected = deviceIsConnected;
