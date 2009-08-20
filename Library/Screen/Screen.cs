@@ -29,6 +29,11 @@ namespace Library.Screen
         public ScreenState State { get; protected set; }
 
         /// <summary>
+        /// Occurs when this screen changes state.
+        /// </summary>
+        public event EventHandler<EventArgs> StateChanged;
+
+        /// <summary>
         /// The screen stack on which this screen is placed.
         /// </summary>
         public ScreenStack Stack { get; internal set; }
@@ -75,7 +80,7 @@ namespace Library.Screen
                     _transitionElapsed += time;
                     if (_transitionElapsed > TransitionOnTime)
                     {
-                        State = ScreenState.Active;
+                        OnStateChanged(ScreenState.Active);
                     }
                     UpdateTransitionOn(time, MathHelper.Clamp(_transitionElapsed / TransitionOnTime, 0f, 1f), _transitionStack);
                     break;
@@ -83,7 +88,7 @@ namespace Library.Screen
                     _transitionElapsed += time;
                     if (_transitionElapsed > TransitionOffTime)
                     {
-                        State = ScreenState.Inactive;
+                        OnStateChanged(ScreenState.Inactive);
                     }
                     UpdateTransitionOff(time, MathHelper.Clamp(_transitionElapsed / TransitionOffTime, 0f, 1f), _transitionStack);
                     break;
@@ -111,13 +116,13 @@ namespace Library.Screen
             }
             if (TransitionOnTime > 0)
             {
-                State = ScreenState.TransitionOn;
+                OnStateChanged(ScreenState.TransitionOn);
                 _transitionElapsed = 0f;
                 _transitionStack = pushed;
             }
             else
             {
-                State = ScreenState.Active;
+                OnStateChanged(ScreenState.Active);
             }
         }
 
@@ -134,13 +139,13 @@ namespace Library.Screen
             }
             if (TransitionOffTime > 0)
             {
-                State = ScreenState.TransitionOff;
+                OnStateChanged(ScreenState.TransitionOff);
                 _transitionElapsed = 0f;
                 _transitionStack = popped;
             }
             else
             {
-                State = ScreenState.Inactive;
+                OnStateChanged(ScreenState.Inactive);
             }
         }
 
@@ -178,6 +183,19 @@ namespace Library.Screen
         /// <param name="popped">True if the screen was popped from the stack; otherwise, false.</param>
         protected virtual void UpdateTransitionOff(float time, float progress, bool popped)
         {
+        }
+
+        /// <summary>
+        /// Notifies listeners that the state of this screen changed.
+        /// </summary>
+        /// <param name="newState">The new state of the screen.</param>
+        protected virtual void OnStateChanged(ScreenState newState)
+        {
+            State = newState;
+            if (StateChanged != null)
+            {
+                StateChanged(this, EventArgs.Empty);
+            }
         }
 
         private float _transitionElapsed = 0f;

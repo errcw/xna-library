@@ -24,6 +24,11 @@ namespace Library.Input
         public event EventHandler<EventArgs> ControllerDisconnected;
 
         /// <summary>
+        /// If vibration is enabled for the active controller.
+        /// </summary>
+        public bool VibrationEnabled { get; set; }
+
+        /// <summary>
         /// Creates a new input poller.
         /// </summary>
         /// <param name="game">The game context.</param>
@@ -81,9 +86,7 @@ namespace Library.Input
         public void StopVibration()
         {
             _vibration.Clear();
-#if XBOX
             GamePad.SetVibration(Controller.Value, 0f, 0f);
-#endif
         }
 
         /// <summary>
@@ -142,9 +145,10 @@ namespace Library.Input
                     return true;
                 }
             });
-#if XBOX
-            GamePad.SetVibration(Controller.Value, vibration.X, vibration.Y);
-#endif
+            if (VibrationEnabled)
+            {
+                GamePad.SetVibration(Controller.Value, vibration.X, vibration.Y);
+            }
         }
 
         /// <summary>
@@ -203,6 +207,8 @@ namespace Library.Input
             if (kbd.IsKeyDown(Keys.Enter)) buttons |= Buttons.Start;
             if (kbd.IsKeyDown(Keys.RightShift)) buttons |= Buttons.Back;
             return new GamePadState(Vector2.Zero, Vector2.Zero, 0f, 0f, buttons);
+#else
+#error Input does not support this operating system.
 #endif
         }
 
