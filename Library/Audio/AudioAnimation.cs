@@ -56,6 +56,14 @@ namespace Library.Audio
             return (_instance.State == SoundState.Playing);
         }
 
+        /// <summary>
+        /// Stops the effect immediately.
+        /// </summary>
+        public void Stop()
+        {
+            _instance.Stop();
+        }
+
         private SoundEffectInstance _instance;
     }
 }
