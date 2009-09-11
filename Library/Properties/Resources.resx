@@ -141,6 +141,15 @@
   <data name="ExceptionTrace" xml:space="preserve">
     <value>Stack Trace: {0}</value>
   </data>
+  <data name="PurchaseFailedButton" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="PurchaseFailedText" xml:space="preserve">
+    <value>You are not signed in, or you cannot purchase content.</value>
+  </data>
+  <data name="PurchaseFailedTitle" xml:space="preserve">
+    <value>Cannot Purchase</value>
+  </data>
   <data name="StoragePromptReselectCancelled" xml:space="preserve">
     <value>No storage device selected. Continue without saving?</value>
   </data>
